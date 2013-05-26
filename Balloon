@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Pukaj
+{
+    [Serializable]
+    public class Balloon
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+
+        public int Radius { get; set; }
+        public float Angle { get; set; }
+        public float Velocity { get; set; }
+
+        public Brush brush { get; set; }
+
+        public Rectangle Bounds;
+
+        private float velocityX;
+        private float velocityY;
+
+        public Point Center;
+
+        public Balloon(float x, float y, int radius, float velocity, float angle, Brush br, Point cc)
+        {
+            Center = cc;
+            X = x;
+            Y = y;
+            Radius = radius;
+            Velocity = velocity;
+            Angle = angle;
+            velocityX = (float)Math.Cos(Angle) * Velocity;
+            velocityY = (float)Math.Sin(Angle) * Velocity;
+            brush = br;
+          }
+
+        public void Move()
+        {
+            float nextX = X + velocityX;
+            float nextY = Y + velocityY;
+            if (nextX - Radius <= Bounds.Left || (nextX + Radius >= Bounds.Right))
+            {
+                velocityX = -velocityX;
+            }
+            if (nextY - Radius <= Bounds.Top || (nextY + Radius >= Bounds.Bottom))
+            {
+                velocityY = -velocityY;
+            }
+            X +=( velocityX);
+            Y +=( velocityY);
+        }
+
+        public void Draw(Graphics g)
+        {
+
+            g.FillEllipse(brush, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+
+            Random rr = new Random();
+            Pen pn = new Pen(Color.Red, 2);
+            Color color = Color.FromArgb(rr.Next(255), rr.Next(255), rr.Next(255));
+            Brush br = new SolidBrush(color);
+        
+            g.FillEllipse(br, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+
+            Point point1t = new Point((int)(X - Radius), (int)(Y));
+            Point point2t = new Point((int)(X + Radius), (int)(Y));
+            Point point3t = new Point((int)(X), (int)(Y + 2.5 * Radius));
+            Point[] triagolnik1 = { point1t, point2t, point3t };
+            g.FillPolygon(br, triagolnik1);
+
+
+            g.DrawLine(pn, (int)(X), (int)(Y + 2.5 * Radius), (int)(X + 7), (int)(Y + 2.5 * Radius + 11));
+            g.DrawLine(pn, (int)(X + 7), (int)(Y + 2.5 * Radius + 11), (int)(X - 5), (int)(Y + 2.5 * Radius + 21));
+            g.DrawLine(pn, (int)(X - 5), (int)(Y + 2.5 * Radius + 21), (int)(X + 2), (int)(Y + 2.5 * Radius + 33));
+        }
+
+    }
+}
+
+       
