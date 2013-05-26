@@ -1,0 +1,62 @@
+using Pukaj.Properties;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Pukaj
+{
+    public class man{
+
+     public enum DIRECTION
+        {
+            RIGHT,
+            LEFT,
+        }
+
+        public int X { get; set; }
+        public int Y { get; set; }
+        public Image coveche;
+        public DIRECTION Direction;
+        public Rectangle Bounds;
+
+        public man()
+        {
+            X = 150;
+            Y = 300;
+            coveche = Resources.man;
+            Direction = DIRECTION.LEFT;
+           
+        }
+
+        public void ChangeDirection(DIRECTION direction)
+        {
+            Direction = direction;
+        }
+
+
+        public void Move(int width, int height)
+        {
+            if (Direction == DIRECTION.RIGHT)
+                {
+                X += 1;
+                if (X >= width)
+                {
+                    X = width - 1;
+                }
+            }
+            if (Direction == DIRECTION.LEFT)
+            {
+                X -= 1;
+                if (X < 0)
+                {
+                    X = 0;
+                }
+            }
+
+        }
+
+    }
+}
